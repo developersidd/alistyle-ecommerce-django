@@ -6,6 +6,6 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "django>=5.2.5",
-    "django-session-timeout>=0.1.0",
+    "pillow>=12.0.0",
     "python-decouple>=3.8",
 ]

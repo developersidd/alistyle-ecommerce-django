@@ -17,10 +17,10 @@ DEBUG = config("DEBUG", cast=bool, default=True)
 ALLOWED_HOSTS = []
 
 # Session timeout setttings
-SESSION_EXPIRE_SECONDS = config("SESSION_EXPIRE_SECONDS", cast=int, default=True)
-SESSION_EXPIRE_AFTER_LAST_ACTIVITY = config(
-    "SESSION_EXPIRE_AFTER_LAST_ACTIVITY", cast=bool, default=True
-)
+# SESSION_EXPIRE_SECONDS = config("SESSION_EXPIRE_SECONDS", cast=int, default=True)
+# SESSION_EXPIRE_AFTER_LAST_ACTIVITY = config(
+#    "SESSION_EXPIRE_AFTER_LAST_ACTIVITY", cast=bool, default=True
+# )
 # SESSION_TIMEOUT_REDIRECT = '/accounts/login'
 
 
@@ -33,12 +33,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "accounts",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django_session_timeout.middleware.SessionTimeoutMiddleware",
+    # "django_session_timeout.middleware.SessionTimeoutMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -64,7 +65,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "alistyle.wsgi.application"
-
+AUTH_USER_MODEL = "accounts.Account"  # appname/modelname
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
