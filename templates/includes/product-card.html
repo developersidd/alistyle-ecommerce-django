@@ -1,0 +1,51 @@
+{% load static %}
+{% comment %} djlint:off H006 H013 H021 {% endcomment %}
+<div class="col-md-3">
+  <div href="#" class="card card-product-grid">
+    <a href="{{ product.get_url }}" class="img-wrap">
+      <img src="{{ product.images.url }}" />
+    </a>
+    {% if product.get_active_discount_info and product.get_active_discount_info.percent > 0 %}
+      <span class="badge badge-danger discount-badge start-1">- {{ product.get_active_discount_info.percent }} %</span>
+    {% endif %}
+    {% comment %} also print the discount name {% endcomment %}
+    {% if product.get_active_discount_info and product.get_active_discount_info.name %}
+      <span class="badge badge-info discount-name-badge">{{ product.get_active_discount_info.name }}</span>
+    {% endif %}
+    <figcaption class="info-wrap">
+      <a href="{{ product.get_url }}" class="title">{{ product.product_name }}</a>
+      <div class="rating-wrap">
+        {% comment %}{{ product.averageReview }}{% endcomment %}
+        <ul class="rating-stars">
+          <li class="rating-star">
+            <i class="fa fa-star{% if product.averageReview < 0.5 %}-o{% elif product.averageReview < 1 %}-half-full{% endif %}"
+               aria-hidden="true"></i>
+            <i class="fa fa-star{% if product.averageReview < 1 %}-o{% elif product.averageReview < 2 %}-half-full{% endif %}"
+               aria-hidden="true"></i>
+            <i class="fa fa-star{% if product.averageReview < 2 %}-o{% elif product.averageReview < 3 %}-half-full{% endif %}"
+               aria-hidden="true"></i>
+            <i class="fa fa-star{% if product.averageReview < 3 %}-o{% elif product.averageReview < 4 %}-half-full{% endif %}"
+               aria-hidden="true"></i>
+            <i class="fa fa-star{% if product.averageReview < 4 %}-o{% elif product.averageReview < 5 %}-half-full{% endif %}"
+               aria-hidden="true"></i>
+          </li>
+        </ul>
+        {% if product.countReview > 0 %}
+          <span class="label-rating text-muted">{{ product.countReview }} reviews</span>
+        {% endif %}
+      </div>
+      <div class="price mt-1">
+        {% if product.get_active_discount_info and product.get_active_discount_info.percent > 0 %}
+          <span>৳{{ product.final_price }}</span>
+          <del class="price-old"> ৳{{ product.price }} </del>
+        {% else %}
+          <span>৳{{ product.price }}</span>
+        {% endif %}
+      </div>
+      <button class="btn btn-twitter w-100 mt-3" data-product-id="{{ product.id }}">
+        <i class="fa fa-shopping-cart mr-1"></i> Add to Cart
+      </button>
+      <!-- price-wrap.// -->
+    </figcaption>
+  </div>
+</div>

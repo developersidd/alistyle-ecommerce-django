@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "accounts",
+    "category",
+    "store",
 ]
 
 MIDDLEWARE = [
@@ -59,6 +61,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "store.context_processors.sliders",
+                "category.context_processors.menu_links",
             ],
         },
     },
@@ -126,6 +130,9 @@ STATIC_ROOT = BASE_DIR / "static"
 STATICFILES_DIRS = [
     BASE_DIR / "alistyle/static",
 ]
+
+USE_TZ = True
+TIME_ZONE = "Asia/Dhaka"
 
 from django.contrib.messages import constants as messages
 

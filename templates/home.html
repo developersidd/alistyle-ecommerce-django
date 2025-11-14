@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  {% comment %}
+  Banner Slider {% endcomment %}
+  {% include "includes/banner-slider.html" %}
+  {% if flash_sale %}
+    <section class="container padding-bottom padding-top">
+      <div class="card flex-lg-row card-deal wrap">
+        <div class="col-heading justify-content-center col-lg-3  content-body max-md-text-center">
+          <header class="section-heading">
+            <h3 class="section-title">Deals and offers</h3>
+            <p>Hygiene equipments</p>
+          </header>
+          {% comment %} Timer {% endcomment %}
+          <div class="timer" data-end-date="{{ flash_sale.end_time|date:'c' }}">
+            <div>
+              <span class="num" data-unit="days">04</span> <small>Days</small>
+            </div>
+            <div>
+              <span class="num" data-unit="hours">12</span> <small>Hours</small>
+            </div>
+            <div>
+              <span class="num" data-unit="minutes">58</span> <small>Min</small>
+            </div>
+            <div>
+              <span class="num" data-unit="seconds">02</span> <small>Sec</small>
+            </div>
+          </div>
+          {% comment %}{% endif %}{% endcomment %}
+        </div>
+        <div class="row no-gutters items-wrap  col-lg-9 px-0">
+          {% for item in flash_sale.categories %}
+            <div class="col-md col-6 border-left">
+              <figure class="card-product-grid card h-100 border-0 mb-0 mr-0">
+                <a href="#" class="img-wrap">
+                  <img src="{{ item.category.cat_img.url }}" />
+                </a>
+                <div class="text-wrap p-3">
+                  <a href="#" class="title">{{ item.category.category_name }}</a>
+                  <span class="badge badge-danger">- {{ item.discount_percent }} %</span>
+                </div>
+              </figure>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+  {% endif %}
+  <section class="section-content padding-y-sm">
+    <div class="container">
+      <article class="card card-body">
+        <div class="row">
+          <div class="col-md-4">
+            <figure class="item-feature">
+              <span class="text-primary"><i class="fa fa-2x fa-truck"></i></span>
+              <figcaption class="pt-3">
+                <h5 class="title">Fast delivery</h5>
+                <p>
+                  We pack and ship your orders quickly so they arrive right on
+                  time, every time.
+                </p>
+              </figcaption>
+            </figure>
+            <!-- iconbox // -->
+          </div>
+          <!-- col // -->
+          <div class="col-md-4">
+            <figure class="item-feature">
+              <span class="text-primary"><i class="fa fa-2x fa-landmark"></i></span>
+              <figcaption class="pt-3">
+                <h5 class="title">Creative Strategy</h5>
+                <p>
+                  Our team combines fresh ideas with smart planning to bring your
+                  brand to life.
+                </p>
+              </figcaption>
+            </figure>
+            <!-- iconbox // -->
+          </div>
+          <!-- col // -->
+          <div class="col-md-4">
+            <figure class="item-feature">
+              <span class="text-primary"><i class="fa fa-2x fa-lock"></i></span>
+              <figcaption class="pt-3">
+                <h5 class="title">High secured</h5>
+                <p>
+                  Your data and transactions are fully protected with advanced
+                  security measures.
+                </p>
+              </figcaption>
+            </figure>
+            <!-- iconbox // -->
+          </div>
+          <!-- col // -->
+        </div>
+      </article>
+    </div>
+    <!-- container .//  -->
+  </section>
+  <section class="section-content">
+    <div class="container">
+      <header class="section-heading">
+        <h3 class="section-title">Popular products</h3>
+      </header>
+      <!-- sect-heading -->
+      <div class="row">
+        {% for product in popular_products %}
+          {% include "includes/product-card.html" with product=product %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  <script>
+  function initTimer() {
+    const timerEl = document.querySelector(".timer");
+    const endDate = new Date(timerEl.dataset.endDate);
+    console.log("🚀 ~ endDate:", endDate);
+    let hasExpired = false;
+    function updateTimer() {
+      const now = new Date();
+      const diff = endDate - now;
+
+      if (diff <= 0 || endDate.toString() === "Invalid Date") {
+        // Timer expired or invalid date
+        timerEl
+          .querySelectorAll(".num")
+          .forEach((el) => (el.textContent = "00"));
+        // Reload page only once and only if on home page
+        if (diff > -2000 && isHomePage()) {
+          hasExpired = true;
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        }
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      timerEl.querySelector('[data-unit="days"]').textContent = String(
+        days
+      ).padStart(2, "0");
+      timerEl.querySelector('[data-unit="hours"]').textContent = String(
+        hours
+      ).padStart(2, "0");
+      timerEl.querySelector('[data-unit="minutes"]').textContent = String(
+        minutes
+      ).padStart(2, "0");
+      timerEl.querySelector('[data-unit="seconds"]').textContent = String(
+        seconds
+      ).padStart(2, "0");
+    }
+
+    function isHomePage() {
+      const path = window.location.pathname;
+      console.log("🚀 ~ path:", path);
+      return path === "/" || path === "/home" || path === "/home/";
+    }
+
+    updateTimer();
+    setInterval(updateTimer, 1000);
+  }
+
+  // Initialize when DOM is ready
+  document.addEventListener("DOMContentLoaded", initTimer);
+  </script>
+{% endblock content %}
