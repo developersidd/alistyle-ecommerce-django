@@ -1,16 +1,15 @@
 {% load static %}
 {% comment %} djlint:off H006 H013 H021 {% endcomment %}
+{% csrf_token %}
 <div class="col-md-3">
-  <div href="#" class="card card-product-grid">
+  <div class="card card-product-grid">
     <a href="{{ product.get_url }}" class="img-wrap">
       <img src="{{ product.images.url }}" />
     </a>
-    {% if product.get_active_discount_info and product.get_active_discount_info.percent > 0 %}
-      <span class="badge badge-danger discount-badge start-1">- {{ product.get_active_discount_info.percent }} %</span>
-    {% endif %}
-    {% comment %} also print the discount name {% endcomment %}
-    {% if product.get_active_discount_info and product.get_active_discount_info.name %}
-      <span class="badge badge-info discount-name-badge">{{ product.get_active_discount_info.name }}</span>
+    {% if product.get_active_discount_info.name %}
+      <span class="badge badge-info">{{ product.get_active_discount_info.name }}</span>
+    {% elif product.get_active_discount_info and product.get_active_discount_info.percent > 0 %}
+      <span class="badge badge-danger discount-badge start-1">&minus;{{ product.get_active_discount_info.percent }} %</span>
     {% endif %}
     <figcaption class="info-wrap">
       <a href="{{ product.get_url }}" class="title">{{ product.product_name }}</a>
@@ -42,9 +41,14 @@
           <span>৳{{ product.price }}</span>
         {% endif %}
       </div>
-      <button class="btn btn-twitter w-100 mt-3" data-product-id="{{ product.id }}">
-        <i class="fa fa-shopping-cart mr-1"></i> Add to Cart
-      </button>
+      <form action="{% url "add_to_cart" product.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit"
+                class="btn btn-primary w-100 mt-3"
+                data-product-id="{{ product.id }}">
+          <i class="icon fas fa-shopping-cart"></i> <span class="text">Add to Cart</span>
+        </button>
+      </form>
       <!-- price-wrap.// -->
     </figcaption>
   </div>

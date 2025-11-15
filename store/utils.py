@@ -1,6 +1,7 @@
 from datetime import timedelta
 from django.db import models
 from django.utils import timezone
+from alistyle.utils import get_session_key
 from store.models import Product, ProductView
 
 
@@ -9,11 +10,7 @@ def track_product_view(request, product):
     Track a product view for analytics and user behavior analysis.
     """
     # get or create session key
-    if not request.session.session_key:
-        request.session.create()
-
-    session_key = request.session.session_key
-
+    session_key = get_session_key(request)
     # check if the product has already been viewed in this session
     recent_view = ProductView.objects.filter(
         session_key=session_key,
