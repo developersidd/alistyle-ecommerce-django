@@ -2,7 +2,7 @@ from datetime import datetime
 from django.shortcuts import render
 from django.utils import timezone
 
-from store.models import Campaign, FlashSale, Product
+from store.models import Campaign, FlashSale, FlashSaleCategory, Product
 
 
 def home(request):
@@ -10,22 +10,22 @@ def home(request):
     start_time = None
     end_time = None
     # Flash Sale Products (only active)
-    flash_sale = (
-        FlashSale.objects.filter(start_time__lte=now, end_time__gte=now, is_active=True)
-        .prefetch_related("categories")
-        .order_by("start_time")
-        .first()
+    flash_sale_categories = (
+        FlashSaleCategory.objects.filter(
+            flash_sale__start_time__lte=now,
+            flash_sale__end_time__gte=now,
+            flash_sale__is_active=True,
+        )
+        .select_related("flash_sale")
+        .order_by("flash_sale__start_time")
     )
-    flash_sale_categories = []
-    if flash_sale:
+
+    if flash_sale_categories.exists():
+        flash_sale = flash_sale_categories.first().flash_sale
         start_time = flash_sale.start_time
         end_time = flash_sale.end_time
-        for category in flash_sale.categories.all():
-            data = {
-                "category": category,
-                "discount_percent": flash_sale.discount_percent,
-            }
-            flash_sale_categories.append(data)
+    else:
+        flash_sale = None
     # get popular products
     popular_products = Product.objects.filter(is_active=True).order_by(
         "-view_count", "-purchase_count", "-cart_add_count"

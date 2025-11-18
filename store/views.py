@@ -6,6 +6,29 @@ from store.forms import ReviewForm
 from store.models import Product, ProductGallery, ReviewRating
 
 
+# store view
+def store(request, category_slug=None, flash_sale=None):
+    if category_slug:
+        products = (
+            Product.objects.filter(
+                category__slug=category_slug, is_available=True, is_active=True
+            )
+            .order_by("id")
+        )
+    elif flash_sale:
+        products = (
+            Product.objects.filter(
+                flash_sales__id=flash_sale, is_available=True, is_active=True
+            )
+            .order_by("id")
+        )
+    products = (
+        Product.objects.all().filter(is_available=True, is_active=True).order_by("id")
+    )
+    context = {"products": products}
+    return render(request, "store/store.html", context=context)
+
+
 # Product detail view
 def product_detail(request, category_slug, product_slug):
 
@@ -16,8 +39,7 @@ def product_detail(request, category_slug, product_slug):
         raise e
 
     # TODO: check if the product is in cart also check order status
-    
-    
+
     # Reviews
     reviews = ReviewRating.objects.filter(product_id=product.id, status=True)
 

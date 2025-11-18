@@ -41,7 +41,9 @@ class Product(models.Model):
     images = models.ImageField(upload_to="photos/products")
     stock = models.IntegerField()
     is_available = models.BooleanField(default=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, related_name="products"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -54,33 +56,58 @@ class Product(models.Model):
         now = datetime.now()
         discounts = []
 
-        # 1. Flash Sales (Highest Priority)
-        flash_sales = (
-            FlashSale.objects.filter(
-                start_time__lte=now, end_time__gte=now, is_active=True
+        # 1. Product level flash sales
+        product_flash_sales = (
+            FlashSaleProduct.objects.filter(
+                product=self,
+                flash_sale__start_time__lte=now,
+                flash_sale__end_time__gte=now,
+                flash_sale__is_active=True,
             )
-            .filter(models.Q(products=self) | models.Q(categories=self.category))
+            .select_related("flash_sale")
             .order_by("-discount_percent")
         )
 
-        if flash_sales.exists():
-            fs = flash_sales.first()
+        if product_flash_sales.exists():
+            fs = product_flash_sales.first()
             discounts.append(
                 {
                     "type": "flash_sale",
                     "percent": fs.discount_percent,
                     "priority": 1,
-                    "name": fs.title,
+                    "name": fs.flash_sale.title,
                 }
             )
-
+        else:
+            # Check category-level flash sales
+            category_flash_sales = (
+                FlashSaleCategory.objects.filter(
+                    category=self.category,
+                    flash_sale__start_time__lte=now,
+                    flash_sale__end_time__gte=now,
+                    flash_sale__is_active=True,
+                )
+                .select_related("flash_sale")
+                .order_by("-discount_percent")
+            )
+            if category_flash_sales.exists():
+                fs = category_flash_sales.first()
+                discounts.append(
+                    {
+                        "type": "flash_sale",
+                        "percent": fs.discount_percent,
+                        "priority": 1,
+                        "name": fs.flash_sale.title,
+                    }
+                )
+                
         # 2. Campaigns
         campaigns = (
             Campaign.objects.filter(
                 start_date__lte=today, end_date__gte=today, is_active=True
             )
             .filter(models.Q(categories=self.category) | models.Q(products=self))
-            .order_by("-discount_percent")
+            .order_by("-discount_percent", "start_date")
         )
 
         if campaigns.exists():
@@ -106,7 +133,7 @@ class Product(models.Model):
                     "type": "product_discount",
                     "percent": self.discount_percent,
                     "priority": 3,
-                    "name": "",
+                    "name": "Product Discount",
                 }
             )
 
@@ -182,36 +209,55 @@ class Campaign(models.Model):
 # Flash Sale Model
 class FlashSale(models.Model):
     title = models.CharField(max_length=200, default="Flash Sale")
-    discount_percent = models.PositiveIntegerField(
-        help_text="Discount percentage (0-100)"
-    )
+
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     is_active = models.BooleanField(default=True)
-
-    # ManyToMany allows applying flash sale to multiple items
-    categories = models.ManyToManyField(
-        Category, blank=True, related_name="flash_sales"
-    )
-    products = models.ManyToManyField(Product, blank=True, related_name="flash_sales")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ["-discount_percent", "-start_time"]
+        ordering = ["-start_time"]
 
     def __str__(self):
-        return f"{self.title} ({self.discount_percent}%)"
+        return f"{self.title}"
 
     def clean(self):
         if self.start_time and self.end_time and self.start_time >= self.end_time:
             raise ValidationError("End time must be after start time")
 
-        # if not self.categories.exists() and not self.products.exists():
-        #    raise ValidationError(
-        #        "Flash sale must target at least one category or product"
-        #    )
+
+class FlashSaleProduct(models.Model):
+    flash_sale = models.ForeignKey(
+        FlashSale, on_delete=models.CASCADE, related_name="flash_sale_products"
+    )
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name="flash_sales"
+    )
+    discount_percent = models.PositiveIntegerField(
+        help_text="Discount percentage for this product in the flash sale (0-100)"
+    )
+
+    class Meta:
+        unique_together = ("flash_sale", "product")
+        ordering = ["-discount_percent"]
+
+
+class FlashSaleCategory(models.Model):
+    flash_sale = models.ForeignKey(
+        FlashSale, on_delete=models.CASCADE, related_name="flash_sale_categories"
+    )
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, related_name="flash_sales"
+    )
+    discount_percent = models.PositiveIntegerField(
+        help_text="Discount percentage for this category in the flash sale (0-100)"
+    )
+
+    class Meta:
+        unique_together = ("flash_sale", "category")
+        ordering = ["-discount_percent"]
 
 
 # Product View Tracking Model
@@ -249,9 +295,7 @@ class VariationManager(models.Manager):
 
     def sizes(self):
         # This defines a custom method to retrieve active variations that are categorized as "size".
-        return super().filter(
-            variation_category="size", is_active=True
-        )
+        return super().filter(variation_category="size", is_active=True)
 
 
 # Variation Model
@@ -260,7 +304,7 @@ class Variation(models.Model):
     variation_category = models.CharField(choices=variation_category_choices)
     variation_value = models.CharField(max_length=100)
     is_active = models.BooleanField(default=True)
-    
+
     objects = VariationManager()
 
     def __str__(self):
