@@ -22,259 +22,174 @@
     <div class="container my-4 py-4">
         <div class="row ">
             <aside class="col-md-3">
-                <div class="card">
-                    <article class="filter-group">
-                        <header class="card-header">
-                            <a href="#"
-                               data-toggle="collapse"
-                               data-target="#collapse_1"
-                               aria-expanded="true"
-                               class="">
-                                <i class="icon-control fa fa-chevron-down"></i>
-                                <h6 class="title">Product type</h6>
-                            </a>
-                        </header>
-                        <div class="filter-content collapse show" id="collapse_1">
-                            <div class="card-body">
-                                <form class="pb-3">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Search">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-light" type="button">
-                                                <i class="fa fa-search"></i>
-                                            </button>
+                <form action="{% url "store" %}" method="get">
+                    <input type="hidden" name="layout" value="{{ layout }}">
+                    <div class="card">
+                        <article class="filter-group">
+                            <header class="card-header">
+                                <a href="#"
+                                   data-toggle="collapse"
+                                   data-target="#collapse_2"
+                                   aria-expanded="true"
+                                   class="">
+                                    <i class="icon-control fa fa-chevron-down"></i>
+                                    <h6 class="title">Categories</h6>
+                                </a>
+                            </header>
+                            <div class="filter-content collapse show" id="collapse_2">
+                                <div class="card-body">
+                                    {% for category in links %}
+                                        <label for="{{ category.slug }}" class="custom-control custom-checkbox">
+                                            <input id="{{ category.slug }}"
+                                                   name="category_slug"
+                                                   value="{{ category.slug }}"
+                                                   {% if category.slug in category_slugs %}checked{% endif %}
+                                                   type="checkbox"
+                                                   class="custom-control-input">
+                                            <div style="user-select: none;" class="custom-control-label">
+                                                {{ category.category_name }}
+                                                <b class="badge badge-pill badge-light float-right"> {{ category.product_count }} </b>
+                                            </div>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                                <!-- card-body.// -->
+                            </div>
+                        </article> <!-- filter-group .// -->
+                        <article class="filter-group">
+                            <header class="card-header">
+                                <a href="#"
+                                   data-toggle="collapse"
+                                   data-target="#collapse_3"
+                                   aria-expanded="true"
+                                   class="">
+                                    <i class="icon-control fa fa-chevron-down"></i>
+                                    <h6 class="title">Price range</h6>
+                                </a>
+                            </header>
+                            <div class="filter-content collapse show" id="collapse_3">
+                                <div class="card-body">
+                                    <div class="range-slider">
+                                        <div class="range-selected" id="rangeSelected"></div>
+                                    </div>
+                                    <div class="range-input">
+                                        <input style="top: -35px"
+                                               type="range"
+                                               id="min_range"
+                                               min="0"
+                                               max="10000"
+                                               value="{{ min_price | default:'0' }}"
+                                               step="100">
+                                        <input style="top: -35px"
+                                               type="range"
+                                               id="max_range"
+                                               min="0"
+                                               max="10000"
+                                               value="{{ max_price | default:'10000' }}"
+                                               step="100">
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label>Min</label>
+                                            <input id="min_price"
+                                                   value="{{ min_price | default:'0' }}"
+                                                   name="min_price"
+                                                   class="form-control"
+                                                   placeholder="৳0"
+                                                   type="number">
+                                        </div>
+                                        <div class="form-group text-right col-md-6">
+                                            <label>Max</label>
+                                            <input value="{{ max_price | default:'10000' }}"
+                                                   id="max_price"
+                                                   name="max_price"
+                                                   class="form-control"
+                                                   placeholder="৳1,0000"
+                                                   type="number">
                                         </div>
                                     </div>
-                                </form>
-                                <ul class="list-menu">
-                                    <li>
-                                        <a href="#">People</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Watches</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Cinema</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Clothes</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Home items</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Animals</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">People</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <!-- card-body.// -->
-                        </div>
-                    </article> <!-- filter-group  .// -->
-                    <article class="filter-group">
-                        <header class="card-header">
-                            <a href="#"
-                               data-toggle="collapse"
-                               data-target="#collapse_2"
-                               aria-expanded="true"
-                               class="">
-                                <i class="icon-control fa fa-chevron-down"></i>
-                                <h6 class="title">Brands</h6>
-                            </a>
-                        </header>
-                        <div class="filter-content collapse show" id="collapse_2" style="">
-                            <div class="card-body">
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" checked="" class="custom-control-input">
-                                    <div class="custom-control-label">
-                                        Mercedes
-                                        <b class="badge badge-pill badge-light float-right">120</b>
-                                    </div>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" checked="" class="custom-control-input">
-                                    <div class="custom-control-label">
-                                        Toyota
-                                        <b class="badge badge-pill badge-light float-right">15</b>
-                                    </div>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" checked="" class="custom-control-input">
-                                    <div class="custom-control-label">
-                                        Mitsubishi
-                                        <b class="badge badge-pill badge-light float-right">35</b>
-                                    </div>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" checked="" class="custom-control-input">
-                                    <div class="custom-control-label">
-                                        Nissan
-                                        <b class="badge badge-pill badge-light float-right">89</b>
-                                    </div>
-                                </label>
-                                <label class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <div class="custom-control-label">
-                                        Honda
-                                        <b class="badge badge-pill badge-light float-right">30</b>
-                                    </div>
-                                </label>
-                            </div>
-                            <!-- card-body.// -->
-                        </div>
-                    </article> <!-- filter-group .// -->
-                    <article class="filter-group">
-                        <header class="card-header">
-                            <a href="#"
-                               data-toggle="collapse"
-                               data-target="#collapse_3"
-                               aria-expanded="true"
-                               class="">
-                                <i class="icon-control fa fa-chevron-down"></i>
-                                <h6 class="title">Price range</h6>
-                            </a>
-                        </header>
-                        <div class="filter-content collapse show" id="collapse_3" style="">
-                            <div class="card-body">
-                                <input type="range" class="custom-range" min="0" max="100" name="">
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label>Min</label>
-                                        <input class="form-control" placeholder="$0" type="number">
-                                    </div>
-                                    <div class="form-group text-right col-md-6">
-                                        <label>Max</label>
-                                        <input class="form-control" placeholder="$1,0000" type="number">
-                                    </div>
+                                    <!-- form-row.// -->
+                                    <button type="submit" class="btn btn-block btn-primary">Apply</button>
                                 </div>
-                                <!-- form-row.// -->
-                                <button class="btn btn-block btn-primary">Apply</button>
+                                <!-- card-body.// -->
                             </div>
-                            <!-- card-body.// -->
-                        </div>
-                    </article> <!-- filter-group .// -->
-                    <article class="filter-group">
-                        <header class="card-header">
-                            <a href="#"
-                               data-toggle="collapse"
-                               data-target="#collapse_4"
-                               aria-expanded="true"
-                               class="">
-                                <i class="icon-control fa fa-chevron-down"></i>
-                                <h6 class="title">Sizes</h6>
-                            </a>
-                        </header>
-                        <div class="filter-content collapse show" id="collapse_4" style="">
-                            <div class="card-body">
-                                <label class="checkbox-btn">
-                                    <input type="checkbox">
-                                    <span class="btn btn-light">XS</span>
-                                </label>
-                                <label class="checkbox-btn">
-                                    <input type="checkbox">
-                                    <span class="btn btn-light">SM</span>
-                                </label>
-                                <label class="checkbox-btn">
-                                    <input type="checkbox">
-                                    <span class="btn btn-light">LG</span>
-                                </label>
-                                <label class="checkbox-btn">
-                                    <input type="checkbox">
-                                    <span class="btn btn-light">XXL</span>
-                                </label>
+                        </article> <!-- filter-group .// -->
+                        <article class="filter-group">
+                            <header class="card-header">
+                                <a href="#"
+                                   data-toggle="collapse"
+                                   data-target="#collapse_4"
+                                   aria-expanded="true"
+                                   class="">
+                                    <i class="icon-control fa fa-chevron-down"></i>
+                                    <h6 class="title">Sizes</h6>
+                                </a>
+                            </header>
+                            <div class="filter-content collapse show" id="collapse_4">
+                                <div class="card-body">
+                                    {% for available_size in available_sizes %}
+                                        <label class="checkbox-btn">
+                                            <input name="size"
+                                                   value="{{ available_size }}"
+                                                   type="checkbox"
+                                                   {% if available_size in selected_sizes %}checked{% endif %}>
+                                            <span class="btn btn-light">{{ available_size }}</span>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                                <!-- card-body.// -->
                             </div>
-                            <!-- card-body.// -->
-                        </div>
-                    </article> <!-- filter-group .// -->
-                    <article class="filter-group">
-                        <header class="card-header">
-                            <a href="#"
-                               data-toggle="collapse"
-                               data-target="#collapse_5"
-                               aria-expanded="false"
-                               class="">
-                                <i class="icon-control fa fa-chevron-down"></i>
-                                <h6 class="title">More filter</h6>
-                            </a>
-                        </header>
-                        <div class="filter-content collapse in" id="collapse_5" style="">
-                            <div class="card-body">
-                                <label class="custom-control custom-radio">
-                                    <input type="radio"
-                                           name="myfilter_radio"
-                                           checked=""
-                                           class="custom-control-input">
-                                    <div class="custom-control-label">Any condition</div>
-                                </label>
-                                <label class="custom-control custom-radio">
-                                    <input type="radio" name="myfilter_radio" class="custom-control-input">
-                                    <div class="custom-control-label">Brand new</div>
-                                </label>
-                                <label class="custom-control custom-radio">
-                                    <input type="radio" name="myfilter_radio" class="custom-control-input">
-                                    <div class="custom-control-label">Used items</div>
-                                </label>
-                                <label class="custom-control custom-radio">
-                                    <input type="radio" name="myfilter_radio" class="custom-control-input">
-                                    <div class="custom-control-label">Very old</div>
-                                </label>
-                            </div>
-                            <!-- card-body.// -->
-                        </div>
-                    </article> <!-- filter-group .// -->
-                </div>
+                        </article> <!-- filter-group .// -->
+                    </div>
+                </form>
                 <!-- card.// -->
             </aside>
             <main class="col-md-9">
                 <header class="border-bottom mb-4 pb-3">
                     <div class="form-inline">
-                        <span class="mr-md-auto">32 Items found</span>
-                        <select class="mr-2 form-control">
-                            <option>Latest items</option>
-                            <option>Trending</option>
-                            <option>Most Popular</option>
-                            <option>Cheapest</option>
+                        <span class="mr-md-auto">{{ products|length }} Items found</span>
+                        <select name="sort_by" id="sort_by" class="mr-2 form-control">
+                            <option value="latest_items"
+                                    {% if request.GET.sort_by == "latest_items" %}selected{% endif %}>
+                                Latest items
+                            </option>
+                            <option value="trending"
+                                    {% if request.GET.sort_by == "trending" %}selected{% endif %}>Trending</option>
+                            <option value="most_popular"
+                                    {% if request.GET.sort_by == "most_popular" %}selected{% endif %}>
+                                Most Popular
+                            </option>
+                            <option value="cheapest"
+                                    {% if request.GET.sort_by == "cheapest" %}selected{% endif %}>Cheapest</option>
                         </select>
                         <div class="btn-group">
-                            <a href="#"
-                               class="btn btn-outline-secondary"
-                               data-toggle="tooltip"
-                               title="List view">
-                                <i class="fa fa-bars"></i></a>
-                            <a href="#"
-                               class="btn  btn-outline-secondary active"
-                               data-toggle="tooltip"
-                               title="Grid view">
-                                <i class="fa fa-th"></i></a>
+                            <button class="btn btn-outline-secondary layout-btn {% if request.GET.layout == "list" %}active{% endif %}"
+                                    data-toggle="tooltip"
+                                    data-layout="list"
+                                    title="List view">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button class="btn btn-outline-secondary layout-btn {% if request.GET.layout == "grid" %}active{% endif %}"
+                                    data-toggle="tooltip"
+                                    data-layout="grid"
+                                    title="Grid view">
+                                <i class="fa fa-th"></i>
+                            </button>
                         </div>
                     </div>
+                    {% comment %}</form>{% endcomment %}
                 </header>
                 <!-- sect-heading -->
                 <div class="row">
-                    <div class="col-md-4">
-                        <figure class="card card-product-grid">
-                            <div class="img-wrap">
-                                <span class="badge badge-danger">NEW</span>
-                                <img src="images/items/1.jpg">
-                                <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a>
-                            </div>
-                            <!-- img-wrap.// -->
-                            <figcaption class="info-wrap">
-                                <div class="fix-height">
-                                    <a href="#" class="title">Great item name goes here</a>
-                                    <div class="price-wrap mt-2">
-                                        <span class="price">$1280</span>
-                                        <del class="price-old">$1980</del>
-                                    </div>
-                                    <!-- price-wrap.// -->
-                                </div>
-                                <a href="#" class="btn btn-block btn-primary">Add to cart</a>
-                            </figcaption>
-                        </figure>
-                    </div>
-                    <!-- col.// -->
+                    {% for product in products %}
+                        {% if request.GET.layout == "list" %}
+                            {% include "includes/product-large-card.html" with product=product %}
+                        {% else %}
+                            {% include "includes/product-card.html" with product=product column_width=4 %}
+                        {% endif %}
+                    {% endfor %}
                 </div>
-            </div>
-        {% endblock content %}
+            </main>
+        </div>
+    </div>
+{% endblock content %}

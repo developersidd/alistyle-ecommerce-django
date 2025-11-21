@@ -6,7 +6,7 @@ from store.models import Campaign, FlashSale, FlashSaleCategory, Product
 
 
 def home(request):
-    now = datetime.now()
+    now = timezone.now()
     start_time = None
     end_time = None
     # Flash Sale Products (only active)

@@ -52,8 +52,8 @@ class Product(models.Model):
 
     def get_active_discounts(self):
         """Returns all active discounts for this product with priority"""
-        today = datetime.today().date()
-        now = datetime.now()
+        today = timezone.now().date()
+        now = timezone.now()
         discounts = []
 
         # 1. Product level flash sales
@@ -300,7 +300,7 @@ class VariationManager(models.Manager):
 
 # Variation Model
 class Variation(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="variations")
     variation_category = models.CharField(choices=variation_category_choices)
     variation_value = models.CharField(max_length=100)
     is_active = models.BooleanField(default=True)

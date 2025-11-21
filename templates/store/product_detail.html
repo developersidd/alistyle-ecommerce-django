@@ -14,12 +14,11 @@
                     <li class="breadcrumb-item active" aria-current="page">{{ product.product_name }}</li>
                 </ol>
             </nav>
-            {% comment %}  
+            {% comment %}
             action="{% url 'add_to_cart' product.id %}"
                 method="post"
             {% endcomment %}
-            <div 
-                  id="add-to-cart-form">
+            <div id="add-to-cart-form">
                 {% csrf_token %}
                 {% comment %} product id {% endcomment %}
                 <div class="card">
@@ -62,7 +61,7 @@
                         <div class="item-option-select">
                             <h6>Available Size</h6>
                             <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-                                {% for v in product.variation_set.sizes %}
+                                {% for v in product.variations.sizes %}
                                     <label class="btn btn-light label-size">
                                         <input required type="radio" value="{{ v.variation_value }}" name="size">
                                         {{ v.variation_value | capfirst }}
@@ -73,7 +72,7 @@
                         <div class="item-option-select">
                             <h6>Color</h6>
                             <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-                                {% for v in product.variation_set.colors %}
+                                {% for v in product.variations.colors %}
                                     <label class="btn btn-light label-color">
                                         <input value="{{ v.variation_value }}" required type="radio" name="color">
                                         {{ v.variation_value | capfirst }}

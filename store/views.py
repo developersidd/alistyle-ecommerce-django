@@ -1,31 +1,67 @@
-from math import prod
 from django.contrib import messages
 from django.shortcuts import redirect, render
 
 from store.forms import ReviewForm
-from store.models import Product, ProductGallery, ReviewRating
+from store.models import Product, ProductGallery, ReviewRating, Variation
 
 
 # store view
-def store(request, category_slug=None, flash_sale=None):
-    if category_slug:
-        products = (
-            Product.objects.filter(
-                category__slug=category_slug, is_available=True, is_active=True
-            )
-            .order_by("id")
+def store(request, category_slug=None):
+    category_slugs = request.GET.getlist("category_slug") or None
+    sizes = request.GET.getlist("size") or None
+    min_price = request.GET.get("min_price", "0")
+    max_price = request.GET.get("max_price", "100000")
+    layout = request.GET.get("layout", "grid")
+    sort_by = request.GET.get("sort_by", "latest_items")
+    try:
+        min_price_int = int(min_price)
+        max_price_int = int(max_price)
+    except ValueError:
+        min_price_int = 0
+        max_price_int = 100000
+
+    products = Product.objects.filter(is_available=True, is_active=True)
+    # Apply category filter
+    if category_slugs and len(category_slugs) > 0:
+        products = products.filter(
+            category__slug__in=category_slugs,
         )
-    elif flash_sale:
-        products = (
-            Product.objects.filter(
-                flash_sales__id=flash_sale, is_available=True, is_active=True
-            )
-            .order_by("id")
-        )
-    products = (
-        Product.objects.all().filter(is_available=True, is_active=True).order_by("id")
+    # Apply single category filter
+    elif category_slug:
+        products = products.filter(category__slug=category_slug)
+
+    # Apply price filter
+    products = products.filter(price__gte=min_price_int, price__lte=max_price_int)
+
+    # Apply size filter
+    if sizes and len(sizes) > 0:
+        products = products.filter(
+            variations__variation_category="size",
+            variations__variation_value__in=sizes,
+        ).distinct()
+
+    # Get available sizes from variations
+    available_sizes = (
+        Variation.objects.filter(variation_category="size")
+        .values_list(
+            "variation_value", flat=True
+        )  # value_list to get a flat list of size values
+        .distinct()
+        .order_by("variation_value")
     )
-    context = {"products": products}
+
+    #query_dict = request.GET.copy()
+    #query_dict.pop("layout", None)
+    #query_string_without_layout = query_dict.urlencode()
+
+    context = {
+        "products": products,
+        "available_sizes": available_sizes,
+        "category_slugs": category_slugs,
+        "selected_sizes": sizes,
+        "min_price": min_price,
+        "max_price": max_price,
+    }
     return render(request, "store/store.html", context=context)
 
 

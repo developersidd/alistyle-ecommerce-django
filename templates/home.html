@@ -33,11 +33,11 @@
           {% for item in flash_sale.categories %}
             <div class="col-md col-6 border-left">
               <figure class="card-product-grid card h-100 border-0 mb-0 mr-0">
-                <a href="#" class="img-wrap">
+                <a href="{{ item.category.get_url }}" class="img-wrap">
                   <img src="{{ item.category.cat_img.url }}" />
                 </a>
                 <div class="text-wrap p-3">
-                  <a href="#" class="title">{{ item.category.category_name }}</a>
+                  <a href="{{ item.category.get_url }}" class="title">{{ item.category.category_name }}</a>
                   <span class="badge badge-danger">- {{ item.discount_percent }} %</span>
                 </div>
               </figure>
@@ -106,7 +106,7 @@
       <!-- sect-heading -->
       <div class="row">
         {% for product in popular_products %}
-          {% include "includes/product-card.html" with product=product badge_text="NEW" %}
+          {% include "includes/product-card.html" with product=product %}
         {% endfor %}
       </div>
     </div>

@@ -1,6 +1,7 @@
 from pathlib import Path
 from decouple import config
 import os
+from django.contrib.messages import constants as messages
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 print(
@@ -107,11 +108,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
 
 USE_I18N = True
 
 USE_TZ = True
+TIME_ZONE = "Asia/Dhaka"
 
 
 # Static files (CSS, JavaScript, Images)
@@ -132,10 +133,6 @@ STATICFILES_DIRS = [
     BASE_DIR / "alistyle/static",
 ]
 
-USE_TZ = True
-TIME_ZONE = "Asia/Dhaka"
-
-from django.contrib.messages import constants as messages
 
 MESSAGE_TAGS = {messages.ERROR: "danger", 50: "critical"}
 

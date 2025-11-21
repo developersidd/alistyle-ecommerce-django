@@ -53,10 +53,10 @@ def add_to_cart(request, product_id):
         cart = get_or_create_cart(request)
         quantity = int(request.POST.get("quantity", 1))
         # get the product's default variations if no variations selected
-        first_color = product.variation_set.filter(
+        first_color = product.variations.filter(
             variation_category__iexact="color"
         ).first()
-        first_size = product.variation_set.filter(
+        first_size = product.variations.filter(
             variation_category__iexact="size"
         ).first()
         if first_color and first_size:
