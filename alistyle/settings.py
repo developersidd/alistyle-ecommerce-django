@@ -4,11 +4,11 @@ import os
 from django.contrib.messages import constants as messages
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-print(
-    "🐍 File: alistyle/settings.py | Line: 6 | undefined ~ BASE_DIR",
-    BASE_DIR,
-    Path(__file__).resolve().parent,
-)
+#print(
+#    "🐍 File: alistyle/settings.py | Line: 6 | undefined ~ BASE_DIR",
+#    BASE_DIR,
+#    Path(__file__).resolve().parent,
+#)
 
 
 SECRET_KEY = config("SECRET_KEY")

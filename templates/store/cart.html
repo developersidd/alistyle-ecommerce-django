@@ -32,12 +32,12 @@
                                                          alt="{{ item.product.product_name }}">
                                                 </div>
                                                 <figcaption class="info mt-2">
-                                                    <a href="{{ item.product.get_url }}" class="title text-dark">{{ item.product.product_name }}</a>
-                                                    <p class="text-muted small">
-                                                        {% for v in item.variations.all %}
-                                                            <span>{{ v.variation_category|capfirst }}</span>: {{ v.variation_value|capfirst }}
-                                                        {% endfor %}
-                                                    </p>
+                        <a href="{{ item.product.get_url }}" class="title text-dark">{{ item.product.product_name }}</a>
+                        <p class="text-muted small">
+                            {% for v in item.variations.all %}
+                            <span>{{ v.variation_category|capfirst }}</span>: {{ v.variation_value|capfirst }}
+                            {% endfor %}
+                        </p>
                                                 </figcaption>
                                             </figure>
                                         </td>
@@ -51,12 +51,17 @@
 
                         {% endfor %}
                         <div class="input-group-prepend">
-                            <button  class="btn btn-light" type="submit" id="button-plus">+</button>
+                            <button  class="btn btn-light" type="submit">+</button>
                         </div>
                     </form>                                
-                        <input id="quantity" type="text" class="form-control" value="{{ item.quantity }}">
+                        <input type="text" class="form-control" value="{{ item.quantity }}">
                     <div class="input-group-append">
-                        <a href={% url "decrease_cart_item" item.product.id item.id %} class="btn btn-light" type="button" id="button-minus">&minus;</a>
+                       <a href="{% url 'decrease_cart_item' item.product.id item.id %}"
+                        class="btn btn-light"
+                        type="button">
+                        &minus;
+                        </a>
+
                                                     </div>
                                                 </div>
                                             </div>
