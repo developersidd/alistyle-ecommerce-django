@@ -8,4 +8,4 @@ def menu_links(request):
             "products", filter=models.Q(products__is_active=True)
         )
     )
-    return dict(links=links)
+    return dict(category_links=links)

@@ -4,6 +4,7 @@ from decouple import config
 import os
 from django.contrib.messages import constants as messages
 from django.utils.translation import gettext_lazy as _
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 # print(
 #    "🐍 File: alistyle/settings.py | Line: 6 | undefined ~ BASE_DIR",
@@ -29,6 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "modeltranslation",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -47,7 +49,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     # "django_session_timeout.middleware.SessionTimeoutMiddleware",
-    'django.middleware.locale.LocaleMiddleware',
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -113,16 +115,24 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en"
 LANGUAGES = [
-    ('en', _('English')),
-    ('bn', _('Bangla')),
+    ("en", _("English")),
+    ("bn", _("Bangla")),
 ]
 
 USE_I18N = True
 USE_TZ = True
 TIME_ZONE = "Asia/Dhaka"
 LOCALE_PATHS = [
-    os.path.join(BASE_DIR, 'locale'),
+    os.path.join(BASE_DIR, "locale"),
 ]
+
+# ModelTranslation settings
+MODELTRANSLATION_DEFAULT_LANGUAGE = "en"
+MODELTRANSLATION_LANGUAGES = ("en", "bn")
+MODELTRANSLATION_FALLBACK_LANGUAGES = {
+    "default": ("en",),
+    "bn": ("en",),
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/

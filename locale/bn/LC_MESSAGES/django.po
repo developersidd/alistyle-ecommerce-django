@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-24 23:34+0600\n"
+"POT-Creation-Date: 2025-12-26 14:19+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\alistyle\settings.py:116
+#: .\alistyle\settings.py:118
 msgid "English"
 msgstr ""
 
-#: .\alistyle\settings.py:117
+#: .\alistyle\settings.py:119
 msgid "Bangla"
 msgstr "বাংলা"
 
@@ -57,6 +57,95 @@ msgstr "পুরাতন পণ্য"
 #: .\store\views.py:27
 msgid "Trending"
 msgstr "প্রচলিত পণ্য"
+
+#: .\templates\admin\base_site.html:5
+msgid "Django site admin"
+msgstr ""
+
+#: .\templates\admin\base_site.html:15
+msgid "Django administration"
+msgstr ""
+
+#: .\templates\store\product_detail.html:10
+msgid "Home"
+msgstr "হোম"
+
+#: .\templates\store\product_detail.html:13
+msgid "Store"
+msgstr "স্টোর"
+
+#: .\templates\store\product_detail.html:56
+#: .\templates\store\product_detail.html:202
+msgid "reviews"
+msgstr "পর্যালোচনা"
+
+#: .\templates\store\product_detail.html:61
+msgid "High quality material"
+msgstr "উচ্চ মানের উপাদান"
+
+#: .\templates\store\product_detail.html:64
+msgid "Excellent build quality"
+msgstr "চমৎকার বিল্ড মান"
+
+#: .\templates\store\product_detail.html:67
+msgid "Long lasting and durable"
+msgstr "দীর্ঘস্থায়ী এবং টেকসই"
+
+#: .\templates\store\product_detail.html:72
+msgid "Available Size"
+msgstr "ব্যবহারযোগ্য সাইজ"
+
+#: .\templates\store\product_detail.html:85
+msgid "Color"
+msgstr "রঙ"
+
+#: .\templates\store\product_detail.html:97
+msgid "Quantity"
+msgstr "পরিমান"
+
+#: .\templates\store\product_detail.html:123
+msgid "Out of Stock"
+msgstr "স্টক আউট"
+
+#: .\templates\store\product_detail.html:129
+msgid "Add to cart"
+msgstr "কার্টে যোগ করুন"
+
+#: .\templates\store\product_detail.html:152
+msgid "Write Your Review"
+msgstr "আপনার পর্যালোচনা লিখুন"
+
+#: .\templates\store\product_detail.html:155
+msgid "How do you rate this product?"
+msgstr "আপনি এই পণ্যটিকে কীভাবে মূল্যায়ন করেন?"
+
+#: .\templates\store\product_detail.html:180
+msgid "Review Title:"
+msgstr "পর্যালোচনা শিরোনাম"
+
+#: .\templates\store\product_detail.html:183
+msgid "Review:"
+msgstr "পর্যালোচনা"
+
+#: .\templates\store\product_detail.html:188
+msgid "Submit Review"
+msgstr "পর্যালোচনা জমা দিন"
+
+#: .\templates\store\product_detail.html:190
+msgid "You must purchase this product to post a review."
+msgstr "পর্যালোচনা পোস্ট করার জন্য আপনাকে এই পণ্যটি কিনতে হবে।."
+
+#: .\templates\store\product_detail.html:194
+msgid "You must be logged in to post a review."
+msgstr "পর্যালোচনা পোস্ট করার জন্য আপনাকে লগইন করতে হবে।"
+
+#: .\templates\store\product_detail.html:194
+msgid "Login now"
+msgstr "লগইন করুন"
+
+#: .\templates\store\product_detail.html:200
+msgid "Customer Reviews"
+msgstr "গ্রাহক পর্যালোচনা"
 
 #: .\templates\store\store.html:171
 msgid "Items found"

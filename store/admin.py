@@ -79,6 +79,16 @@ class ProductAdmin(admin.ModelAdmin):
 
     get_final_price.short_description = "Price"
 
+    class Meta:
+        js = (
+            "http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js",
+            "http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js",
+            "modeltranslation/js/tabbed_translation_fields.js",
+        )
+        css = {
+            "screen": ("modeltranslation/css/tabbed_translation_fields.css",),
+        }
+
 
 @admin.register(Variation)
 class VariationAdmin(admin.ModelAdmin):
@@ -138,6 +148,7 @@ class CampaignAdmin(admin.ModelAdmin):
             )
 
     get_status.short_description = "Status"
+
     def get_item_count(self, obj):
         category_count = obj.categories.count()
         product_count = obj.products.count()
@@ -146,8 +157,9 @@ class CampaignAdmin(admin.ModelAdmin):
             product_count,
             category_count,
         )
-        
+
     get_item_count.short_description = "Items"
+
 
 class FlashSaleCategoryInline(admin.TabularInline):
     model = FlashSaleCategory

@@ -49,10 +49,11 @@
             {% for lang_code, lang_name in LANGUAGES %}
               <form action="{% url 'set_language' %}" method="post" class="d-inline">
                 {% csrf_token %}
+                {% comment %} django set_language needs a next param to redirect the user after setting the language {% endcomment %}
                 <input name="next" type="hidden" value="{{ redirect_to }}">
                 <input type="hidden" name="language" value="{{ lang_code }}">
                 <button type="submit"
-                        style="outline:none;"
+                        style="outline:none"
                         class="dropdown-item  {% if lang_code == LANGUAGE_CODE %}active{% endif %}">
                   {{ lang_name }}
                 </button>
@@ -139,12 +140,12 @@
         <li class="nav-item dropdown">
           <a class="nav-link pl-0" data-toggle="dropdown" href="#"><strong><i class="fa fa-bars"></i> &nbsp; All category</strong></a>
           <div class="dropdown-menu">
-            {% for category in links %}
+            {% for category in category_links %}
               <a class="dropdown-item" href="{{ category.get_url }}">{{ category.category_name|capfirst }}</a>
             {% endfor %}
           </div>
         </li>
-        {% for category in links|slice:":7" %}
+        {% for category in category_links|slice:":7" %}
           <li class="nav-item">
             <a class="nav-link text-capitalize" href="{{ category.get_url }}">{{ category.category_name }}</a>
           </li>

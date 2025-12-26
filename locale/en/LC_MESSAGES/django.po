@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-24 23:34+0600\n"
+"POT-Creation-Date: 2025-12-26 14:19+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\alistyle\settings.py:116
+#: .\alistyle\settings.py:118
 msgid "English"
 msgstr ""
 
-#: .\alistyle\settings.py:117
+#: .\alistyle\settings.py:119
 msgid "Bangla"
 msgstr ""
 
@@ -56,6 +56,95 @@ msgstr ""
 
 #: .\store\views.py:27
 msgid "Trending"
+msgstr ""
+
+#: .\templates\admin\base_site.html:5
+msgid "Django site admin"
+msgstr ""
+
+#: .\templates\admin\base_site.html:15
+msgid "Django administration"
+msgstr ""
+
+#: .\templates\store\product_detail.html:10
+msgid "Home"
+msgstr ""
+
+#: .\templates\store\product_detail.html:13
+msgid "Store"
+msgstr ""
+
+#: .\templates\store\product_detail.html:56
+#: .\templates\store\product_detail.html:202
+msgid "reviews"
+msgstr ""
+
+#: .\templates\store\product_detail.html:61
+msgid "High quality material"
+msgstr ""
+
+#: .\templates\store\product_detail.html:64
+msgid "Excellent build quality"
+msgstr ""
+
+#: .\templates\store\product_detail.html:67
+msgid "Long lasting and durable"
+msgstr ""
+
+#: .\templates\store\product_detail.html:72
+msgid "Available Size"
+msgstr ""
+
+#: .\templates\store\product_detail.html:85
+msgid "Color"
+msgstr ""
+
+#: .\templates\store\product_detail.html:97
+msgid "Quantity"
+msgstr ""
+
+#: .\templates\store\product_detail.html:123
+msgid "Out of Stock"
+msgstr ""
+
+#: .\templates\store\product_detail.html:129
+msgid "Add to cart"
+msgstr ""
+
+#: .\templates\store\product_detail.html:152
+msgid "Write Your Review"
+msgstr ""
+
+#: .\templates\store\product_detail.html:155
+msgid "How do you rate this product?"
+msgstr ""
+
+#: .\templates\store\product_detail.html:180
+msgid "Review Title:"
+msgstr ""
+
+#: .\templates\store\product_detail.html:183
+msgid "Review:"
+msgstr ""
+
+#: .\templates\store\product_detail.html:188
+msgid "Submit Review"
+msgstr ""
+
+#: .\templates\store\product_detail.html:190
+msgid "You must purchase this product to post a review."
+msgstr ""
+
+#: .\templates\store\product_detail.html:194
+msgid "You must be logged in to post a review."
+msgstr ""
+
+#: .\templates\store\product_detail.html:194
+msgid "Login now"
+msgstr ""
+
+#: .\templates\store\product_detail.html:200
+msgid "Customer Reviews"
 msgstr ""
 
 #: .\templates\store\store.html:171

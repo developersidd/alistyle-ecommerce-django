@@ -56,12 +56,12 @@
                             </header>
                             <div class="filter-content collapse show" id="collapse_2">
                                 <div class="card-body">
-                                    {% for category in links %}
+                                    {% for category in category_links %}
                                         <label for="{{ category.slug }}" class="custom-control custom-checkbox">
                                             <input id="{{ category.slug }}"
                                                    name="category_slug"
                                                    value="{{ category.slug }}"
-                                                   {% if category.slug in category_slugs %}checked{% endif %}
+                                                   {% if  category.slug in category_slugs %}checked{% endif %}
                                                    type="checkbox"
                                                    class="custom-control-input">
                                             <div style="user-select: none;" class="custom-control-label">

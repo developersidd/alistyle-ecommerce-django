@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load i18n %}
+{% load l10n %}
 {% load static %}
 {% block content %}
     <section class="section-content padding-y bg">
@@ -6,10 +8,12 @@
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="{% url 'home' %}">Home</a>
+                        <a href="{% url 'home' %}">
+                            {% trans "Home" %} </a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{% url 'store' %}">Store</a>
+                        <a href="{% url 'store' %}">
+                            {% trans "Store" %}</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">{{ product.product_name }}</li>
                 </ol>
@@ -50,38 +54,48 @@
                                 <span class="badge badge-warning"> <i class="fa fa-star"></i>
                                 {{ product.averageReview }}
                             </span>
-                            <small class="text-muted ml-2">{{ product.countReview }} reviews</small>
+                            <small class="text-muted ml-2">{{ product.countReview }} {% trans "reviews" %}</small>
                         </div>
                         <p>{{ product.description }}</p>
                         <ul class="list-check mb-4">
-                            <li>Best performance of battery</li>
-                            <li>5 years warranty for this product</li>
-                            <li>Best performance of battery</li>
+                            <li>
+                            {% trans "High quality material" %}
+                            </li>
+                            <li>
+                            {% trans "Excellent build quality" %}
+                            </li>
+                            <li>
+                            {% trans "Long lasting and durable" %}
+                            </li>
                         </ul>
-                        <div class="item-option-select">
-                            <h6>Available Size</h6>
-                            <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-                                {% for v in product.variations.sizes %}
-                                    <label class="btn btn-light label-size">
-                                        <input required type="radio" value="{{ v.variation_value }}" name="size">
-                                        {{ v.variation_value | capfirst }}
-                                    </label>
-                                {% endfor %}
+                        {% if product.variation.sizes|length > 0 %}
+                            <div class="item-option-select">
+                                <h6>{% trans "Available Size" %}</h6>
+                                <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+                                    {% for v in product.variations.sizes %}
+                                        <label class="btn btn-light label-size">
+                                            <input required type="radio" value="{{ v.variation_value }}" name="size">
+                                            {{ v.variation_value | capfirst }}
+                                        </label>
+                                    {% endfor %}
+                                </div>
                             </div>
-                        </div>
-                        <div class="item-option-select">
-                            <h6>Color</h6>
-                            <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-                                {% for v in product.variations.colors %}
-                                    <label class="btn btn-light label-color">
-                                        <input value="{{ v.variation_value }}" required type="radio" name="color">
-                                        {{ v.variation_value | capfirst }}
-                                    </label>
-                                {% endfor %}
+                        {% endif %}
+                        {% if product.variation.colors|length > 0 %}
+                            <div class="item-option-select">
+                                <h6>{% trans "Color" %}</h6>
+                                <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+                                    {% for v in product.variations.colors %}
+                                        <label class="btn btn-light label-color">
+                                            <input value="{{ v.variation_value }}" required type="radio" name="color">
+                                            {{ v.variation_value | capfirst }}
+                                        </label>
+                                    {% endfor %}
+                                </div>
                             </div>
-                        </div>
+                        {% endif %}
                         <div>
-                            <h6>Quantity</h6>
+                            <h6>{% trans "Quantity" %}</h6>
                             <div class="form-group col-md flex-grow-0">
                                 <div class="input-group mb-3 input-spinner">
                                     <div class="input-group-prepend">
@@ -96,21 +110,23 @@
                         </div>
                         <div class="row mt-3 align-items-center">
                             <div class="col">
-                                <span class="price h4">৳{{ product.final_price }}</span>
+                                <span class="price h4">৳{{ product.final_price|localize }}</span>
                                 {% comment %} show older price {% endcomment %}
-                                {% if product.price > product.final_price %}<del class="price-old text-muted">৳{{ product.price }}</del>{% endif %}
+                                {% if product.price > product.final_price %}
+                                    <del class="price-old text-muted">৳{{ product.price|localize }}</del>
+                                {% endif %}
                             </div>
                             <!-- col.// -->
                             <div id="stock" style="display:none;">{{ product.stock }}</div>
                             <div class="col text-right">
                                 {% if product.stock <= 0 %}
-                                    <h5 class="text-danger">Out of Stock</h5>
+                                    <h5 class="text-danger">{% trans "Out of Stock" %}</h5>
                                 {% else %}
                                     <button type="submit"
                                             class="btn  btn-primary"
                                             data-product-id="{{ product.id }}"
                                             id="add-to-cart-btn">
-                                        <span class="text">Add to cart</span> <i class="icon fas fa-shopping-cart "></i>
+                                        <span class="text">{% trans "Add to cart" %}</span> <i class="icon fas fa-shopping-cart "></i>
                                     </button>
                                 {% endif %}
                                 <a href="#" class="btn  btn-light"> <i class="fas fa-heart"></i>  </a>
@@ -131,10 +147,10 @@
                   method="post"
                   class="padding-y">
                 {% csrf_token %}
-                <h5>Write Your Review</h5>
+                <h5>{% trans "Write Your Review" %}</h5>
                 <div>
                     <!-- Rating stars -->
-                    <label>How do you rate this product?</label>
+                    <label>{% trans "How do you rate this product?" %}</label>
                     <br />
                     <div class="rate" id="rating">
                         <input type="radio" name="rating" id="rating10" value="5" required />
@@ -159,29 +175,31 @@
                         <label for="rating1" title="0.5" class="half"></label>
                     </div>
                     <br />
-                    Review Title:
+                    {% trans "Review Title:" %}
                     <input type="text" required class="form-control" name="subject" />
                     <br />
-                    Review:
+                    {% trans "Review:" %}
                     <textarea name="review" rows="4" class="form-control" required></textarea>
                     <br />
                     {% if user.is_authenticated %}
                         {% if not orderproduct %}
-                            <input type="submit" value="Submit Review" class="btn btn-primary">
+                            <input type="submit" value="{% trans "Submit Review" %}" class="btn btn-primary">
                         {% else %}
-                            <p class="bold">You must purchase this product to post a review.</p>
+                            <p class="bold">{% trans "You must purchase this product to post a review." %}</p>
                         {% endif %}
                     {% else %}
                         <p>
-                            You must be logged in to post a review. <span><a href="{% url 'home' %}">Login now</a></span>
+                            {% trans "You must be logged in to post a review." %} <span><a href="{% url 'home' %}">{% trans "Login now" %}</a></span>
                         </p>
                     {% endif %}
                 </div>
             </form>
             <header class="section-heading">
-                <h3>Customer Reviews</h3>
+                <h3>{% trans "Customer Reviews" %}</h3>
                 <div class="rating-wrap">
-                    <strong class="label-rating text-lg"> {{ product.averageReview }} <span class="text-muted">| {{ product.countReview }} reviews</span></strong>
+                    <strong class="label-rating text-lg"> {{ product.averageReview }} <span class="text-muted">| {{ product.countReview }}  {% trans "reviews" %}
+
+                    </span></strong>
                 </div>
             </header>
             {% for review in reviews %}
