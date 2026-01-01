@@ -1,27 +1,68 @@
-{% extends 'base.html' %}
+{% extends 'simple-base.html' %}
 {% load static %}
+{% load i18n %}
 {% block content %}
     <section class="section-content padding-y bg">
         <div class="container">
-            <!-- ============================ COMPONENT 1 ================================= -->
-            <h4 class="text-center mb-20">{% trans "Review Your Order and Make Payment" %}</h4>
+            {% comment %} Steps {% endcomment %}
+             <div class="steps-horizontal mx-auto mt-3 mb-5">
+        <div style="position: absolute;
+                    top: 24px;
+                    width: 400px;
+                    left: 5rem;
+                    right: 0;
+                    border: 2px solid #4361ee;
+                    z-index: 1"></div>
+        <div class="step-horizontal complete">
+          <div class="step-icon">
+            <i class="fas fa-check"></i>
+          </div>
+          <div class="step-title">
+            <a href="{% url "cart" %}">{% trans "Cart" %}</a>
+          </div>
+        </div>
+        <div class="step-horizontal complete">
+          <div class="step-icon">
+            <i class="fas fa-check"></i>
+          </div>
+          <div class="step-title">
+            <a href="{% url "checkout" %}">
+
+                {% trans "Shipping" %}
+            </a>
+        </div>
+        </div>
+        <div class="step-horizontal active">
+          <div class="step-icon">
+            <i class="fas fa-credit-card"></i>
+          </div>
+          <div class="step-title">{% trans "Payment" %}</div>
+        </div>
+        <div class="step-horizontal">
+          <div class="step-icon">
+            <i class="fas fa-flag"></i>
+          </div>
+          <div class="step-title">{% trans "Confirmation" %}</div>
+        </div>
+      </div>
+            {% comment %}<h4 class="text-center mb-20">{% trans "Review Your Order and Make Payment" %}</h4>{% endcomment %}
             <div class="row">
                 <aside class="col-lg-8">
-                    <div class="card">
+                    <div class="card mb-3">
                         <h5 class="card-header">{% trans "Shipping Address" %}</h5>
                         <div class="card-body">
                             <p class="card-text mb-0">{{ order.full_name }}</p>
                             <p class="card-text mb-0">{{ order.full_address }}</p>
                             <p class="card-text mb-0">{{ order.city }}, {{ order.state }}</p>
                             <p class="card-text mb-0">{{ order.email }}</p>
-                            <p class="card-text mb-0">{{ order.phone }}</p>
+                            <p class="card-text mb-0">{{ order.phone_number }}</p>
                             {% if order.order_note %}<b>{% trans "Order Note" %}: </b> {{ order.order_note }}{% endif %}
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card mb-3">
                         <h5 class="card-header">{% trans "Payment Method" %}</h5>
                         <div class="card-body">
-                            <p class="card-text">PayPal</p>
+                            <p class="card-text">SSL Commerz</p>
                         </div>
                     </div>
                     <div class="card">
@@ -62,8 +103,8 @@
                                             </td>
                                             <td>
                                                 <div class="price-wrap">
-                                                    <var class="price">$ {{ cart_item.sub_total }}</var>
-                                                    <small class="text-muted">$ {{ cart_item.product.price }} each</small>
+                                                    <var class="price">৳{{ cart_item.sub_total }}</var>
+                                                    <small class="text-muted" style="font-size: 0.875em;">৳{{ cart_item.product.price }} each</small>
                                                 </div>
                                                 <!-- price-wrap .// -->
                                             </td>
@@ -81,19 +122,25 @@
                             <dl class="dlist-align">
                                 <dt>Total price:</dt>
                                 <dd class="text-right">
-                                    $ {{ total }}
+                                    ৳{{ total }}
+                                </dd>
+                            </dl>
+                            <dl class="dlist-align">
+                                <dt>Discount:</dt>
+                                <dd class="text-right">
+                                    ৳{{ discount }}
                                 </dd>
                             </dl>
                             <dl class="dlist-align">
                                 <dt>Tax:</dt>
                                 <dd class="text-right">
-                                    $ {{ tax }}
+                                    ৳{{ tax }}
                                 </dd>
                             </dl>
                             <dl class="dlist-align">
                                 <dt>Grand Total:</dt>
                                 <dd class="text-right text-dark b">
-                                    <strong>$ {{ grand_total }}</strong>
+                                    <strong>৳{{ grand_total }}</strong>
                                 </dd>
                             </dl>
                             <hr>
@@ -113,7 +160,7 @@
                         <!-- card-body.// -->
                     </div>
                     <!-- card.// -->
-                    <div class="alert alert-danger" role="alert">
+                    <div class="alert alert-danger mt-3" role="alert">
                         <b>Please Note: </b>This is a demo website. Do not try to make real payments.
                     </div>
                 </aside>

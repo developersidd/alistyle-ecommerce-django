@@ -17,4 +17,5 @@ urlpatterns += i18n_patterns(
     path("accounts/", include("accounts.urls")),
     path("coupon/", include("coupon.urls")),
     path("order/", include("orders.urls")),
+    path("payment/", include("payment.urls")),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

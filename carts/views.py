@@ -34,22 +34,17 @@ def cart(request, total=0, quantity=0, cart_items=None):
         for item in cart_items:
             total += item.product.final_price() * item.quantity
             quantity += item.quantity
+        tax = math.ceil((2 * total) / 100)
+        grand_total = total + tax
         if current_user.is_authenticated:
             if coupon_usage_id:
-                coupon_usage = CouponUsage.objects.filter(
-                    user=current_user, id=coupon_usage_id
-                ).first()
-            else:
                 coupon_usage = (
-                    CouponUsage.objects.filter(user=current_user, is_used=False)
+                    CouponUsage.objects.filter(user=current_user, id=coupon_usage_id)
                     .order_by("-used_at")
                     .first()
                 )
-        if coupon_usage and total > coupon_usage.discount_amount:
-            coupon_discount_amount = coupon_usage.discount_amount
-        tax = math.ceil((2 * total) / 100)
-        grand_total = total + tax
-        if coupon_discount_amount < total:
+                coupon_discount_amount = coupon_usage.discount_amount
+        if coupon_usage and coupon_discount_amount < total:
             grand_total -= coupon_discount_amount
 
     except Exception as e:

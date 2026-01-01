@@ -45,8 +45,8 @@
           <div class="card">
             <div class="card-body">
               <h4 class="card-title mb-4">{% trans "Shipping Address" %}</h4>
-              <form action="{% url 'place_order' %}" method="POST">
-                {% csrf_token %}
+              <form id="shipping-address-form" action="{% url 'place_order' %}" method="POST">
+              {% csrf_token %}
                 <div class="form-row">
                   <div class="col form-group">
                     <label for="">{% trans "First Name" %}</label>
@@ -64,7 +64,7 @@
                   </div>
                   <div class="col form-group">
                     <label for="">{% trans "Phone Number" %}</label>
-                    <input value="{{ request.user.phone_number }}" type="text" name="phone" class="form-control" required>
+                    <input value="{{ request.user.phone_number }}" type="text" name="phone_number" class="form-control" required>
                   </div>
                 </div>
                 <div class="form-row">
@@ -93,6 +93,8 @@
                   <textarea name="order_note" rows="2" class="form-control"></textarea>
                 </div>
               </div>
+        </form>
+
             </div>
             <!-- card.// -->
           </aside>
@@ -144,14 +146,13 @@
                     {% endfor %}
                   </tbody>
                 </table>
-                <button type="submit" name="submit" class="btn btn-primary btn-block">{% trans "Place Order" %}</button>
+                <button form="shipping-address-form" type="submit" name="submit" class="btn btn-primary btn-block">{% trans "Place Order" %}</button>
                 <a href="{% url 'store' %}" class="btn btn-light btn-block">{% trans "Continue shopping" %}</a>
-              </form>
+              </div>
+              <!-- card-body.// -->
             </div>
-            <!-- card-body.// -->
-          </div>
-          <!-- card.// -->
-        </aside>
+            <!-- card.// -->
+          </aside>
         <!-- col.// -->
       </div>
       <!-- row.// -->

@@ -5,16 +5,14 @@ from django.db import models
 from accounts.models import Account
 from store.models import Product, Variation
 
+class OrderStatus(models.TextChoices):
+    PENDING = 'PENDING', 'Pending'
+    COMPLETED = 'COMPLETED', 'Completed'
+    FAILED = 'FAILED', 'Failed'
+    REFUNDED = 'REFUNDED', 'Refunded'
 
 # Create your models here.
 class Order(models.Model):
-
-    STATUS = (
-        ("New", "New"),
-        ("Accepted", "Accepted"),
-        ("Cancelled", "Cancelled"),
-        ("Completed", "Completed"),
-    )
     user = models.ForeignKey(Account, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=55)
     last_name = models.CharField(max_length=55)
@@ -26,12 +24,12 @@ class Order(models.Model):
     state = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
     order_number = models.CharField(max_length=55)
-    order_note = models.TextField(max_length=100)
+    order_note = models.TextField(max_length=100, null=True, blank=True)
     order_total = models.DecimalField(max_digits=10, decimal_places=2)
     tax = models.FloatField()
     is_ordered = models.BooleanField(default=False)
     ip = models.CharField(max_length=50, blank=True)
-    status = models.CharField(choices=STATUS, max_length=50)
+    status = models.CharField(choices=OrderStatus.choices, max_length=50, default=OrderStatus.PENDING)
 
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)
