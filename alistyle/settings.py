@@ -163,11 +163,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 STATIC_URL = "/static/"
 STATIC_ROOT = (
-    BASE_DIR / "staticfiles"
+    BASE_DIR / "static"
 )  # Where collectstatic cmd puts all collected static files (for production)
 STATICFILES_DIRS = [
-    BASE_DIR / "static"
-] # Additional directories where Django looks for static files during development
+    BASE_DIR / "alistyle/static",
+]
+
+# Additional directories where Django looks for static files during development
 
 # for Render Production version
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
