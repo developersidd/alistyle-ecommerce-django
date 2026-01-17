@@ -46,6 +46,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     # "django_session_timeout.middleware.SessionTimeoutMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware'
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -168,6 +169,9 @@ if (BASE_DIR / "alistyle/static").exists():
     STATICFILES_DIRS = [
     BASE_DIR / "alistyle/static",
 ]
+
+# for Render Production version
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MESSAGE_TAGS = {messages.ERROR: "danger", 50: "critical"}
 
