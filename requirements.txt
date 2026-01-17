@@ -13,9 +13,11 @@ django-modeltranslation==0.19.19
 django-session-timeout==0.1.0
 djlint==1.36.4
 editorconfig==0.17.1
+gunicorn==23.0.0
 idna==3.11
 jsbeautifier==1.15.4
 json5==0.12.1
+packaging==25.0
 pathspec==0.12.1
 pillow==12.0.0
 python-decouple==3.8
