@@ -16,7 +16,7 @@ SECRET_KEY = config("SECRET_KEY")
 
 DEBUG = config("DEBUG", cast=bool, default=False)
 
-ALLOWED_HOSTS = ["siddik.pythonanywhere.com"]
+ALLOWED_HOSTS = ["siddik-commerce-django.onrender.com"]
 
 # Session timeout setttings
 # SESSION_EXPIRE_SECONDS = config("SESSION_EXPIRE_SECONDS", cast=int, default=True)
@@ -149,11 +149,13 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "static"
-STATICFILES_DIRS = [
+STATIC_ROOT = BASE_DIR / "staticfiles" # Where collectstatic cmd puts all collected static files (for production)
+STATICFILES_DIRS = [] # Additional directories where Django looks for static files during development
+
+if (BASE_DIR / "alistyle/static").exists():
+    STATICFILES_DIRS = [
     BASE_DIR / "alistyle/static",
 ]
-
 
 MESSAGE_TAGS = {messages.ERROR: "danger", 50: "critical"}
 
