@@ -1,10 +1,7 @@
-from time import sleep
-from turtle import ondrag
 from django.db import models
 
 from accounts.models import Account
 from store.models import Product, Variation
-
 
 class OrderStatus(models.TextChoices):
     NEW = "NEW", "New"
