@@ -4,6 +4,7 @@ import os
 from django.contrib.messages import constants as messages
 from django.utils.translation import gettext_lazy as _
 from urllib.parse import urlparse
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -22,8 +23,8 @@ ALLOWED_HOSTS = ["siddik-commerce-django.onrender.com", "127.0.0.1"]
 
 # Application definition
 
-#SESSION_COOKIE_SAMESITE = 'Lax'  
-#SESSION_COOKIE_SECURE = False  
+# SESSION_COOKIE_SAMESITE = 'Lax'
+# SESSION_COOKIE_SECURE = False
 
 INSTALLED_APPS = [
     "modeltranslation",
@@ -39,14 +40,14 @@ INSTALLED_APPS = [
     "carts",
     "coupon",
     "orders",
-    "payment"
+    "payment",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     # "django_session_timeout.middleware.SessionTimeoutMiddleware",
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -81,29 +82,28 @@ AUTH_USER_MODEL = "accounts.Account"  # appname/modelname
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-#DATABASES = {
+# DATABASES = {
 #    "default": {
 #        "ENGINE": config("DB_ENGINE"),
 #        "NAME": BASE_DIR / config("DB_NAME"),
 #    }
-#}
+# }
 
 DATA_BASE_URL = config("DATA_BASE_URL")
 
 if DATA_BASE_URL:
     url = urlparse(DATA_BASE_URL)
-    
+
     DATABASES = {
         "default": {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': url.path[1:],
-            'USER': url.username,
-            'PASSWORD': url.password,
-            'HOST': url.hostname,
-            'PORT': url.port,
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": url.path[1:],
+            "USER": url.username,
+            "PASSWORD": url.password,
+            "HOST": url.hostname,
+            "PORT": url.port,
         }
     }
-
 
 
 # Password validation
@@ -162,16 +162,15 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles" # Where collectstatic cmd puts all collected static files (for production)
-STATICFILES_DIRS = [] # Additional directories where Django looks for static files during development
-
-if (BASE_DIR / "alistyle/static").exists():
-    STATICFILES_DIRS = [
-    BASE_DIR / "alistyle/static",
-]
+STATIC_ROOT = (
+    BASE_DIR / "staticfiles"
+)  # Where collectstatic cmd puts all collected static files (for production)
+STATICFILES_DIRS = [
+    BASE_DIR / "static"
+] # Additional directories where Django looks for static files during development
 
 # for Render Production version
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MESSAGE_TAGS = {messages.ERROR: "danger", 50: "critical"}
 
