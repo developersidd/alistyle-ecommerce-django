@@ -9,8 +9,9 @@ venv/
 db.sqlite3
 
 # Static files (if generated)
-static/
-greatcart/static/
+/static/
+/staticfiles/
+
 
 # Python cache
 __pycache__/
