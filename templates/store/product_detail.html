@@ -39,6 +39,10 @@
                             <!-- gallery-wrap .end// -->
                             <ul class="thumb">
                                 <li>
+                                
+                                <a href="{{ product.image.url }}" target="mainImage">
+                                    <img src="{{ product.image.url }}" alt="Product Image" />
+                                </a>
                                     {% for i in product_photos %}
                                         <a href="{{ i.image.url }}" target="mainImage">
                                             <img src="{{ i.image.url }}" alt="Product Image" />
