@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 class Category(models.Model):
@@ -9,7 +9,7 @@ class Category(models.Model):
     description = models.TextField(
         max_length=50, blank=True, default="This is category"
     )
-    cat_img = models.ImageField(upload_to="photos/categories", blank=True)
+    cat_img = CloudinaryField("cat_img", folder="django-ecommerce")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

@@ -4,8 +4,7 @@
 {% block content %}
     <section class="section-pagetop bg">
         <div class="container">
-            <h2 class="title-page">
-                {% trans "Shopping cart" %}</h2>
+            <h2 class="title-page">{% trans "Shopping cart" %}</h2>
         </div>
         <!-- container //  -->
     </section>
@@ -30,7 +29,7 @@
                                             <td>
                                                 <figure class="itemside">
                                                     <div class="aside">
-                                                        <img src="{{ item.product.images.url }}"
+                                                        <img src="{{ item.product.image.url }}"
                                                              class="img-sm"
                                                              alt="{{ item.product.product_name }}">
                                                     </div>

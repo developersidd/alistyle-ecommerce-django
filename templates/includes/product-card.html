@@ -5,7 +5,7 @@
 <div class="{% if column_width %}col-md-{{ column_width }}{% else %} col-md-3 {% endif %}">
   <div class="card card-product-grid">
     <div class="img-wrap">
-      <img src="{{ product.images.url }}" />
+      <img src="{{ product.image.url }}" />
       <a class="btn-overlay" href="{{ product.get_url }}"><i class="fa fa-search-plus"></i> {% trans "Quick view" %}</a>
     </div>
     {% if product.get_active_discount_info.name %}

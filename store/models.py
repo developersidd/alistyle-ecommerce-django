@@ -38,7 +38,7 @@ class Product(models.Model):
     discount_start = models.DateField(null=True, blank=True)
     discount_end = models.DateField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    images = models.ImageField(upload_to="photos/products")
+    image = CloudinaryField("image", folder="django-ecommerce",blank=True, null=True)
     stock = models.IntegerField()
     is_available = models.BooleanField(default=True)
     category = models.ForeignKey(
@@ -327,7 +327,7 @@ class ReviewRating(models.Model):
 
 class ProductGallery(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to="store/products")
+    image = CloudinaryField("image", folder="django-ecommerce")
 
     def __str__(self):
         return self.product.product_name

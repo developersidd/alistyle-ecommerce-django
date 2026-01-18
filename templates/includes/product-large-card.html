@@ -4,7 +4,7 @@
     <div class="row no-gutters">
         <aside class="col-md-3">
             <a href="{{ product.get_url }}" class="img-wrap">
-                <img src="{{ product.images.url }}" alt="{{ product.product_name }}">
+                <img src="{{ product.image.url }}" alt="{{ product.product_name }}">
             </a>
         </aside>
         {% if product.get_active_discount_info.name %}
