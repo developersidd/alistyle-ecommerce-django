@@ -107,6 +107,19 @@ if DATA_BASE_URL:
             "PASSWORD": url.password,
             "HOST": url.hostname,
             "PORT": url.port,
+            # Keep connections alive for 10 minutes
+            "CONN_MAX_AGE": 600,  
+            "OPTIONS": {
+                "options": "-c statement_timeout=30000",  # 30 second query timeout
+                "connect_timeout": 10,
+            },
+        }
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
         }
     }
 
@@ -170,7 +183,7 @@ CLOUDINARY_STORAGE = {
 cloudinary.config(
     cloud_name=config("CLOUDINARY_CLOUD_NAME"),
     api_key=config("CLOUDINARY_API_KEY"),
-    api_secret=config("CLOUDINARY_API_SECRET")
+    api_secret=config("CLOUDINARY_API_SECRET"),
 )
 
 # Use Cloudinary for media files

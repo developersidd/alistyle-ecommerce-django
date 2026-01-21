@@ -153,6 +153,8 @@ def checkout(request):
         current_user = request.user
         cart = get_or_create_cart(request)
         cart_items = get_cart_items(current_user, cart)
+        if len(cart_items) == 0:
+            return redirect("cart")
         user_profile = None
         if request.user.is_authenticated:
             user_profile = current_user.user_profile

@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from pyexpat import model
 from cloudinary.models import CloudinaryField
 from itertools import product
 from django.db import models
@@ -38,7 +39,7 @@ class Product(models.Model):
     discount_start = models.DateField(null=True, blank=True)
     discount_end = models.DateField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    image = CloudinaryField("image", folder="django-ecommerce",blank=True, null=True)
+    image = CloudinaryField("image", folder="django-ecommerce", blank=True, null=True)
     stock = models.IntegerField()
     is_available = models.BooleanField(default=True)
     category = models.ForeignKey(
@@ -100,7 +101,7 @@ class Product(models.Model):
                         "name": fs.flash_sale.title,
                     }
                 )
-                
+
         # 2. Campaigns
         campaigns = (
             Campaign.objects.filter(
@@ -178,6 +179,13 @@ class Product(models.Model):
             count = int(reviews["count"])
         return count
 
+    class META:
+        models.Index(fields=["category", "is_available", "-created_at"]),
+        models.Index(fields=["is_active", "is_available"]),
+        models.Index(fields=["-popularity_score", "is_available"]),
+        models.Index(fields=["discount_start", "discount_end"]),
+        ordering = ["-created_at"]
+
 
 # Campaign Model
 class Campaign(models.Model):
@@ -197,6 +205,15 @@ class Campaign(models.Model):
 
     class Meta:
         ordering = ["-discount_percent", "-start_date"]
+        models.Index(fields=["start_date", "end_date", "is_active"])
+        indexes = [
+            models.Index(
+                fields=[
+                    "-discount_percent",
+                    "-start_date",
+                ]
+            )
+        ]
 
     def __str__(self):
         return f"{self.title} ({self.discount_percent}%)"
@@ -219,6 +236,7 @@ class FlashSale(models.Model):
 
     class Meta:
         ordering = ["-start_time"]
+        indexes = [models.Index(fields=["start_time", "end_time", "is_active"])]
 
     def __str__(self):
         return f"{self.title}"
@@ -242,6 +260,10 @@ class FlashSaleProduct(models.Model):
     class Meta:
         unique_together = ("flash_sale", "product")
         ordering = ["-discount_percent"]
+        indexes = [
+            models.Index(fields=["flash_sale", "product"]),
+            models.Index(fields=["product", "-discount_percent"]),
+        ]
 
 
 class FlashSaleCategory(models.Model):
@@ -258,6 +280,10 @@ class FlashSaleCategory(models.Model):
     class Meta:
         unique_together = ("flash_sale", "category")
         ordering = ["-discount_percent"]
+        indexes = [
+            models.Index(fields=["flash_sale", "category"]),
+            models.Index(fields=["category", "-discount_percent"]),
+        ]
 
 
 # Product View Tracking Model
@@ -272,13 +298,16 @@ class ProductView(models.Model):
         ordering = ["-viewed_at"]
         indexes = [
             models.Index(fields=["-viewed_at", "session_key"]),
+            models.Index(fields=["product", "-viewed_at"]),
         ]
+
 
 # Variation Choices
 variation_category_choices = (
     ("color", "color"),
     ("size", "size"),
 )
+
 
 # Variation Manager
 class VariationManager(models.Manager):
@@ -298,7 +327,9 @@ class VariationManager(models.Manager):
 
 # Variation Model
 class Variation(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="variations")
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name="variations"
+    )
     variation_category = models.CharField(choices=variation_category_choices)
     variation_value = models.CharField(max_length=100)
     is_active = models.BooleanField(default=True)
@@ -307,6 +338,9 @@ class Variation(models.Model):
 
     def __str__(self):
         return self.variation_value
+
+    class META:
+        indexes = [models.Index(fields=["product", "variation_category", "is_active"])]
 
 
 # Rating Model
@@ -323,6 +357,12 @@ class ReviewRating(models.Model):
 
     def __str__(self):
         return self.subject
+
+    class META:
+        indexes = [
+            models.Index(fields=["product", "status"]),
+            models.Index(fields=["-created_at"]),
+        ]
 
 
 class ProductGallery(models.Model):
@@ -350,4 +390,8 @@ class BannerSlider(models.Model):
     def __str__(self):
         return self.title
 
-
+    class Meta:
+        ordering = ["position"]
+        indexes = [
+            models.Index(fields=["is_active", "position"]),
+        ]

@@ -20,6 +20,8 @@ from payment.models import Payment
 def place_order(request, total=0):
     cart = get_or_create_cart(request)
     cart_items = get_cart_items(request.user, cart)
+    if len(cart_items) == 0:
+        return redirect("cart")
     coupon_discount = 0
     tax = 0
     grand_total = 0

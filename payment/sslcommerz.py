@@ -13,6 +13,7 @@ def generate_trans_id(size=10, chars=string.ascii_uppercase + string.digits):
 def sslcommerz_payment_gateway(cus_name, amount_to_pay, order_number, lang):
 
     payment_gateway_settings = PaymentGatewaySettings.objects.all().first()
+    print("🐍 File: payment/sslcommerz.py | Line: 16 | sslcommerz_payment_gateway ~ payment_gateway_settings",payment_gateway_settings)
 
     settings = {
         "store_id": payment_gateway_settings.store_id,
